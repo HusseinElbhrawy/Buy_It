@@ -23,16 +23,19 @@ class SignUpScreen extends StatelessWidget {
               hint: 'Enter Your Name',
               icon: Icons.perm_identity,
               keyboardType: TextInputType.name,
+              errorMessage: 'Name Must Not Be Empty',
             ),
             const LoginTextFormFiledWidget(
               hint: 'Enter Your Email',
               icon: Icons.email,
               keyboardType: TextInputType.emailAddress,
+              errorMessage: 'Email Must Not Be Empty',
             ),
             const LoginTextFormFiledWidget(
               hint: 'Enter Your Password',
               icon: Icons.lock,
               keyboardType: TextInputType.visiblePassword,
+              errorMessage: 'Password Must Not Be Empty',
             ),
             Padding(
               padding: EdgeInsets.symmetric(
@@ -60,7 +63,7 @@ class SignUpScreen extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height * 0.030),
+                  vertical: MediaQuery.of(context).size.height * 0.025),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,

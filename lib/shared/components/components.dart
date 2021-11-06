@@ -5,9 +5,11 @@ class LoginTextFormFiledWidget extends StatelessWidget {
   final String hint;
   final IconData icon;
   final TextInputType keyboardType;
+  final String errorMessage;
 
   const LoginTextFormFiledWidget(
       {Key? key,
+      required this.errorMessage,
       required this.hint,
       required this.icon,
       required this.keyboardType})
@@ -24,7 +26,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
       child: TextFormField(
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Must not be empty';
+            return errorMessage;
           }
           return null;
         },
