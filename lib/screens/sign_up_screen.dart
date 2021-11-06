@@ -1,4 +1,5 @@
 import 'package:buy_it/screens/login_screen.dart';
+import 'package:buy_it/servises/auth.dart';
 import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
@@ -10,6 +11,10 @@ class SignUpScreen extends StatelessWidget {
   static String id = 'SignUpScreen';
   const SignUpScreen({Key? key}) : super(key: key);
   static final fromKey = GlobalKey<FormState>();
+  static final TextEditingController emailController = TextEditingController();
+  static final TextEditingController passwordController =
+      TextEditingController();
+  static final auth = Auth();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,11 +36,12 @@ class SignUpScreen extends StatelessWidget {
                   keyboardType: TextInputType.name,
                   errorMessage: 'Name Must Not Be Empty',
                 ),
-                const LoginTextFormFiledWidget(
+                LoginTextFormFiledWidget(
                   hint: 'Enter Your Email',
                   prefixIcon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
                   errorMessage: 'Email Must Not Be Empty',
+                  controller: emailController,
                 ),
                 LoginTextFormFiledWidget(
                   hint: 'Enter Your Password',
@@ -49,6 +55,7 @@ class SignUpScreen extends StatelessWidget {
                   suffixIconOnPressed: () {
                     cubit.changeIconVisibility();
                   },
+                  controller: passwordController,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -64,8 +71,17 @@ class SignUpScreen extends StatelessWidget {
                           borderRadius: BorderRadiusDirectional.all(
                               Radius.circular(12.5)),
                         ))),
-                    onPressed: () {
-                      if (fromKey.currentState!.validate()) {}
+                    onPressed: () async {
+                      if (fromKey.currentState!.validate()) {
+                        fromKey.currentState!.save();
+                        await auth
+                            .signUp(
+                                email: emailController.text,
+                                password: passwordController.text)
+                            .then((value) {
+                          print(value.user!);
+                        });
+                      }
                     },
                     child: const Text(
                       'Sign Up',

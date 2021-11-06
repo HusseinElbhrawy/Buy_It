@@ -1,4 +1,5 @@
 import 'package:buy_it/screens/sign_up_screen.dart';
+import 'package:buy_it/servises/auth.dart';
 import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
@@ -10,6 +11,10 @@ class LoginScreen extends StatelessWidget {
   static String id = 'LoginScreen';
   const LoginScreen({Key? key}) : super(key: key);
   static final formKey = GlobalKey<FormState>();
+  static final TextEditingController emailController = TextEditingController();
+  static final TextEditingController passwordController =
+      TextEditingController();
+  static final auth = Auth();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,13 +53,15 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const LoginTextFormFiledWidget(
+                LoginTextFormFiledWidget(
+                  controller: emailController,
                   hint: 'Enter Your Email',
                   prefixIcon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
                   errorMessage: 'Email Must Not Be Empty',
                 ),
                 LoginTextFormFiledWidget(
+                  controller: passwordController,
                   hint: 'Enter Your Password',
                   prefixIcon: Icons.lock,
                   keyboardType: TextInputType.visiblePassword,
@@ -82,7 +89,16 @@ class LoginScreen extends StatelessWidget {
                               Radius.circular(12.5)),
                         ))),
                     onPressed: () {
-                      if (formKey.currentState!.validate()) {}
+                      if (formKey.currentState!.validate()) {
+                        auth
+                            .signIn(
+                                email: emailController.text,
+                                password: passwordController.text)
+                            .then((value) {
+                          print(value.additionalUserInfo);
+                          print(value.user);
+                        });
+                      }
                     },
                     child: const Text(
                       'Login',

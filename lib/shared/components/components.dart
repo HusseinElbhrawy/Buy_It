@@ -9,6 +9,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
   final String errorMessage;
   final bool secure;
   final Function? suffixIconOnPressed;
+  final TextEditingController? controller;
   const LoginTextFormFiledWidget({
     Key? key,
     this.secure = false,
@@ -18,6 +19,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
     required this.keyboardType,
     this.suffixIcon,
     this.suffixIconOnPressed,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
         bottom: MediaQuery.of(context).size.width * 0.050,
       ),
       child: TextFormField(
+        controller: controller,
         obscureText: secure,
         validator: (value) {
           if (value!.isEmpty) {
