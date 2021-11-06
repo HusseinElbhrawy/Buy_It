@@ -38,6 +38,8 @@ dependencies:
   bloc: ^7.2.1
   flutter_bloc: ^7.3.2
   firebase_core: ^1.10.0
+  motion_toast: ^1.5.0
+  flutter_styled_toast: ^2.0.0
 
 dev_dependencies:
   flutter_test:

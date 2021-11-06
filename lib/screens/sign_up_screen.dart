@@ -1,11 +1,13 @@
 import 'package:buy_it/screens/login_screen.dart';
-import 'package:buy_it/servises/auth.dart';
+import 'package:buy_it/services/auth.dart';
 import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
 import 'package:buy_it/shared/styles/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 class SignUpScreen extends StatelessWidget {
   static String id = 'SignUpScreen';
@@ -74,13 +76,19 @@ class SignUpScreen extends StatelessWidget {
                     onPressed: () async {
                       if (fromKey.currentState!.validate()) {
                         fromKey.currentState!.save();
-                        await auth
-                            .signUp(
-                                email: emailController.text,
-                                password: passwordController.text)
-                            .then((value) {
-                          print(value.user!);
-                        });
+                        try {
+                          await auth.signUp(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                        } on FirebaseAuthException catch (e) {
+                          MotionToast.error(
+                                  title: "Error",
+                                  titleStyle: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                  description: e.message.toString())
+                              .show(context);
+                        }
                       }
                     },
                     child: const Text(

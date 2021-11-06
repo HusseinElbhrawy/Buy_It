@@ -1,11 +1,14 @@
 import 'package:buy_it/screens/sign_up_screen.dart';
-import 'package:buy_it/servises/auth.dart';
+import 'package:buy_it/services/auth.dart';
 import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
 import 'package:buy_it/shared/styles/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 class LoginScreen extends StatelessWidget {
   static String id = 'LoginScreen';
@@ -88,16 +91,21 @@ class LoginScreen extends StatelessWidget {
                           borderRadius: BorderRadiusDirectional.all(
                               Radius.circular(12.5)),
                         ))),
-                    onPressed: () {
+                    onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        auth
-                            .signIn(
-                                email: emailController.text,
-                                password: passwordController.text)
-                            .then((value) {
-                          print(value.additionalUserInfo);
-                          print(value.user);
-                        });
+                        try {
+                          await auth.signIn(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                        } on FirebaseAuthException catch (e) {
+                          MotionToast.error(
+                                  title: "Error",
+                                  titleStyle: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                  description: e.message.toString())
+                              .show(context);
+                        }
                       }
                     },
                     child: const Text(
