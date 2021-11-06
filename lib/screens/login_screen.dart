@@ -44,15 +44,18 @@ class LoginScreen extends StatelessWidget {
             ),
             const LoginTextFormFiledWidget(
               hint: 'Enter Your Email',
-              icon: Icons.email,
+              prefixIcon: Icons.email,
               keyboardType: TextInputType.emailAddress,
               errorMessage: 'Email Must Not Be Empty',
             ),
-            const LoginTextFormFiledWidget(
+            LoginTextFormFiledWidget(
               hint: 'Enter Your Password',
-              icon: Icons.lock,
+              prefixIcon: Icons.lock,
               keyboardType: TextInputType.visiblePassword,
               errorMessage: 'Password Must Not Be Empty',
+              secure: true,
+              suffixIcon: Icons.add,
+              suffixIconOnPressed: () {},
             ),
             Padding(
               padding: EdgeInsets.symmetric(

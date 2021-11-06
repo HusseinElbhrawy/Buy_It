@@ -21,21 +21,26 @@ class SignUpScreen extends StatelessWidget {
             const LoginAndSignUpLogoAndTextWidget(),
             const LoginTextFormFiledWidget(
               hint: 'Enter Your Name',
-              icon: Icons.perm_identity,
+              prefixIcon: Icons.perm_identity,
               keyboardType: TextInputType.name,
               errorMessage: 'Name Must Not Be Empty',
             ),
             const LoginTextFormFiledWidget(
               hint: 'Enter Your Email',
-              icon: Icons.email,
+              prefixIcon: Icons.email,
               keyboardType: TextInputType.emailAddress,
               errorMessage: 'Email Must Not Be Empty',
             ),
-            const LoginTextFormFiledWidget(
+            LoginTextFormFiledWidget(
               hint: 'Enter Your Password',
-              icon: Icons.lock,
+              prefixIcon: Icons.lock,
               keyboardType: TextInputType.visiblePassword,
               errorMessage: 'Password Must Not Be Empty',
+              secure: true,
+              suffixIcon: Icons.add,
+              suffixIconOnPressed: () {
+                print('Sign Up Clicked !');
+              },
             ),
             Padding(
               padding: EdgeInsets.symmetric(

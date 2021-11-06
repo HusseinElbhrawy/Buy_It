@@ -3,17 +3,22 @@ import 'package:flutter/material.dart';
 
 class LoginTextFormFiledWidget extends StatelessWidget {
   final String hint;
-  final IconData icon;
+  final IconData prefixIcon;
+  final IconData? suffixIcon;
   final TextInputType keyboardType;
   final String errorMessage;
-
-  const LoginTextFormFiledWidget(
-      {Key? key,
-      required this.errorMessage,
-      required this.hint,
-      required this.icon,
-      required this.keyboardType})
-      : super(key: key);
+  final bool secure;
+  final Function? suffixIconOnPressed;
+  const LoginTextFormFiledWidget({
+    Key? key,
+    this.secure = false,
+    required this.errorMessage,
+    required this.hint,
+    required this.prefixIcon,
+    required this.keyboardType,
+    this.suffixIcon,
+    this.suffixIconOnPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +29,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
         bottom: MediaQuery.of(context).size.width * 0.050,
       ),
       child: TextFormField(
+        obscureText: secure,
         validator: (value) {
           if (value!.isEmpty) {
             return errorMessage;
@@ -32,7 +38,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
         },
         keyboardType: keyboardType,
         cursorColor: KMainColor,
-        decoration: textFormFieldDecoration(icon: icon, hint: hint),
+        decoration: textFormFieldDecoration(icon: prefixIcon, hint: hint),
       ),
     );
   }
@@ -49,6 +55,13 @@ class LoginTextFormFiledWidget extends StatelessWidget {
       prefixIcon: Icon(
         icon,
         color: KMainColor,
+      ),
+      suffixIcon: GestureDetector(
+        onTap: () => suffixIconOnPressed!(),
+        child: Icon(
+          suffixIcon,
+          color: KMainColor,
+        ),
       ),
     );
   }
