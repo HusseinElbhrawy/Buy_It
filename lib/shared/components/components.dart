@@ -55,3 +55,36 @@ class LoginTextFormFiledWidget extends StatelessWidget {
     );
   }
 }
+
+class LoginAndSignUpLogoAndTextWidget extends StatelessWidget {
+  const LoginAndSignUpLogoAndTextWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.095),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          CircleAvatar(
+            backgroundColor: KMainColor,
+            radius: 50.0,
+            child: Image.asset(
+              'assets/images/icons/buy.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Text(
+            'Buy it',
+            style: TextStyle(
+              fontFamily: 'Pacifico',
+              fontSize: MediaQuery.of(context).size.height * 0.037,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

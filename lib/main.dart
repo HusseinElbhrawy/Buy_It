@@ -1,4 +1,5 @@
 import 'package:buy_it/screens/login_screen.dart';
+import 'package:buy_it/screens/sign_up_screen.dart';
 import 'package:buy_it/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       initialRoute: LoginScreen.id,
       routes: {
         LoginScreen.id: (context) => const LoginScreen(),
+        SignUpScreen.id: (context) => const SignUpScreen(),
       },
       theme: lightTheme,
       themeMode: ThemeMode.light,

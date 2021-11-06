@@ -1,11 +1,12 @@
-import 'package:buy_it/screens/sign_up_screen.dart';
+import 'package:buy_it/screens/login_screen.dart';
 import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
-  static String id = 'LoginScreen';
-  const LoginScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatelessWidget {
+  static String id = 'SignUpScreen';
+  const SignUpScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -15,28 +16,11 @@ class LoginScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         children: [
-          Padding(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.095),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CircleAvatar(
-                  backgroundColor: KMainColor,
-                  radius: 50.0,
-                  child: Image.asset(
-                    'assets/images/icons/buy.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Text(
-                  'Buy it',
-                  style: TextStyle(
-                    fontFamily: 'Pacifico',
-                    fontSize: MediaQuery.of(context).size.height * 0.037,
-                  ),
-                ),
-              ],
-            ),
+          const LoginAndSignUpLogoAndTextWidget(),
+          const LoginTextFormFiledWidget(
+            hint: 'Enter Your Name',
+            icon: Icons.perm_identity,
+            keyboardType: TextInputType.name,
           ),
           const LoginTextFormFiledWidget(
             hint: 'Enter Your Email',
@@ -62,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                   ))),
               onPressed: () {},
               child: const Text(
-                'Login',
+                'Sign Up',
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -77,7 +61,7 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Don't have an account ?",
+                  "Do have an account ?",
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Jannah',
@@ -86,10 +70,10 @@ class LoginScreen extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, SignUpScreen.id);
+                    Navigator.pushNamed(context, LoginScreen.id);
                   },
                   child: Text(
-                    "Register here",
+                    "Login",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: MediaQuery.of(context).size.width * 0.045,
