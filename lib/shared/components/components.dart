@@ -22,6 +22,12 @@ class LoginTextFormFiledWidget extends StatelessWidget {
         bottom: MediaQuery.of(context).size.width * 0.050,
       ),
       child: TextFormField(
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Must not be empty';
+          }
+          return null;
+        },
         keyboardType: keyboardType,
         cursorColor: KMainColor,
         decoration: textFormFieldDecoration(icon: icon, hint: hint),
@@ -36,6 +42,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
       fillColor: KSeconderyColor,
       enabledBorder: textFormFieldBorderDecoration(),
       focusedBorder: textFormFieldBorderDecoration(),
+      border: textFormFieldBorderDecoration(),
       hintText: hint,
       prefixIcon: Icon(
         icon,

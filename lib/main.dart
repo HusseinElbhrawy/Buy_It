@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       initialRoute: LoginScreen.id,
       routes: {
         LoginScreen.id: (context) => const LoginScreen(),
-        SignUpScreen.id: (context) => const SignUpScreen(),
+        SignUpScreen.id: (context) => SignUpScreen(),
       },
       theme: lightTheme,
       themeMode: ThemeMode.light,
