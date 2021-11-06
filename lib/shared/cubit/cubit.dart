@@ -4,5 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BuyItCubit extends Cubit<BuyItStates> {
   BuyItCubit() : super(BuyItInitState());
-  static BuyItCubit get(context) => BlocProvider.of(context);
+  static BuyItCubit object(context) => BlocProvider.of(context);
+
+  bool isVisible = true;
+  void changeIconVisibility() {
+    isVisible = !isVisible;
+    emit(ChangeSuffixIconState());
+  }
 }
