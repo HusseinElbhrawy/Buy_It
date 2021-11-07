@@ -1,3 +1,5 @@
+import 'package:buy_it/models/product_model.dart';
+import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/components.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,7 @@ class AddProductScreen extends StatelessWidget {
   static var productCategory = TextEditingController();
   static var productLocation = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final Store firebaseStore = Store();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -29,92 +32,103 @@ class AddProductScreen extends StatelessWidget {
             },
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsetsDirectional.only(start: width * 0.045),
-              child: Text(
-                'Products Details',
-                style: TextStyle(
-                  fontSize: width * 0.070,
-                  fontFamily: 'Pacifico',
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsetsDirectional.only(start: width * 0.045),
+                child: Text(
+                  'Products Details',
+                  style: TextStyle(
+                    fontSize: width * 0.070,
+                    fontFamily: 'Pacifico',
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: height * 0.050,
-            ),
-            LoginTextFormFiledWidget(
-              controller: productName,
-              prefixIcon: Icons.info,
-              hint: 'Product Name',
-              errorMessage: 'Product Name Must Not Be Empty',
-              keyboardType: TextInputType.text,
-            ),
-            LoginTextFormFiledWidget(
-              controller: productPrice,
-              prefixIcon: Icons.info,
-              hint: 'Product Price',
-              errorMessage: 'Product Price Must Not Be Empty',
-              keyboardType: TextInputType.text,
-            ),
-            LoginTextFormFiledWidget(
-              controller: productDescription,
-              prefixIcon: Icons.info,
-              hint: 'Product Description',
-              errorMessage: 'Product Description Must Not Be Empty',
-              keyboardType: TextInputType.text,
-            ),
-            LoginTextFormFiledWidget(
-              controller: productCategory,
-              prefixIcon: Icons.info,
-              hint: 'Product Category',
-              errorMessage: 'Product Category Must Not Be Empty',
-              keyboardType: TextInputType.text,
-            ),
-            LoginTextFormFiledWidget(
-              controller: productLocation,
-              prefixIcon: Icons.info,
-              hint: 'Product Location',
-              errorMessage: 'Product Location Must Not Be Empty',
-              keyboardType: TextInputType.text,
-            ),
-            Center(
-              child: Container(
-                padding: EdgeInsetsDirectional.only(
-                  start: width * 0.045,
-                  end: width * 0.045,
-                ),
-                width: double.infinity,
-                child: TextButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
-                    }
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      Colors.black,
-                    ),
-                    shape: MaterialStateProperty.all(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadiusDirectional.all(
-                          Radius.circular(10),
+              SizedBox(
+                height: height * 0.050,
+              ),
+              LoginTextFormFiledWidget(
+                controller: productName,
+                prefixIcon: Icons.info,
+                hint: 'Product Name',
+                errorMessage: 'Product Name Must Not Be Empty',
+                keyboardType: TextInputType.text,
+              ),
+              LoginTextFormFiledWidget(
+                controller: productPrice,
+                prefixIcon: Icons.info,
+                hint: 'Product Price',
+                errorMessage: 'Product Price Must Not Be Empty',
+                keyboardType: TextInputType.text,
+              ),
+              LoginTextFormFiledWidget(
+                controller: productDescription,
+                prefixIcon: Icons.info,
+                hint: 'Product Description',
+                errorMessage: 'Product Description Must Not Be Empty',
+                keyboardType: TextInputType.text,
+              ),
+              LoginTextFormFiledWidget(
+                controller: productCategory,
+                prefixIcon: Icons.info,
+                hint: 'Product Category',
+                errorMessage: 'Product Category Must Not Be Empty',
+                keyboardType: TextInputType.text,
+              ),
+              LoginTextFormFiledWidget(
+                controller: productLocation,
+                prefixIcon: Icons.info,
+                hint: 'Product Location',
+                errorMessage: 'Product Location Must Not Be Empty',
+                keyboardType: TextInputType.text,
+              ),
+              Center(
+                child: Container(
+                  padding: EdgeInsetsDirectional.only(
+                    start: width * 0.045,
+                    end: width * 0.045,
+                  ),
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        formKey.currentState!.save();
+                        await firebaseStore.addProduct(
+                          Product(
+                            productName: productName.text,
+                            productPrice: productPrice.text,
+                            productDescription: productDescription.text,
+                            productCategory: productCategory.text,
+                            productLocation: productLocation.text,
+                          ),
+                        );
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.black,
+                      ),
+                      shape: MaterialStateProperty.all(
+                        const RoundedRectangleBorder(
+                          borderRadius: BorderRadiusDirectional.all(
+                            Radius.circular(10),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  child: const Text(
-                    'Add Product',
-                    style: TextStyle(
-                      color: Colors.white,
+                    child: const Text(
+                      'Add Product',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
