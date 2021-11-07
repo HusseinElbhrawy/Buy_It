@@ -11,4 +11,11 @@ class BuyItCubit extends Cubit<BuyItStates> {
     isVisible = !isVisible;
     emit(ChangeSuffixIconState());
   }
+
+  bool isLoading = false;
+  void changeIsLoading() {
+    emit(ChangeIsLoadingLoadingState());
+    isLoading = !isLoading;
+    emit(ChangeIsLoadingSuccessState());
+  }
 }

@@ -4,6 +4,7 @@ import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
 import 'package:buy_it/shared/styles/colors.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,48 +71,65 @@ class LoginScreen extends StatelessWidget {
                   keyboardType: TextInputType.visiblePassword,
                   errorMessage: 'Password Must Not Be Empty',
                   secure: cubit.isVisible,
-                  suffixIcon: cubit.isVisible
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off,
+                  suffixIcon: suffixIconOnOff(cubit),
                   suffixIconOnPressed: () {
                     cubit.changeIconVisibility();
                   },
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.28,
-                    vertical: MediaQuery.of(context).size.height * 0.028,
-                  ),
-                  child: TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                          borderRadius: BorderRadiusDirectional.all(
-                              Radius.circular(12.5)),
-                        ))),
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        try {
-                          await auth.signIn(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          );
-                        } on FirebaseAuthException catch (e) {
-                          MotionToast.error(
-                                  title: "Error",
-                                  titleStyle: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                  description: e.message.toString())
-                              .show(context);
-                        }
-                      }
-                    },
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        color: Colors.white,
+                ConditionalBuilder(
+                  condition: cubit.isLoading,
+                  fallback: (BuildContext context) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.28,
+                        vertical: MediaQuery.of(context).size.height * 0.028,
+                      ),
+                      child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.black),
+                            shape: MaterialStateProperty.all(
+                                const RoundedRectangleBorder(
+                              borderRadius: BorderRadiusDirectional.all(
+                                  Radius.circular(12.5)),
+                            ))),
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            cubit.changeIsLoading();
+                            try {
+                              await auth
+                                  .signIn(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              )
+                                  .then((value) {
+                                cubit.changeIsLoading();
+                              });
+                            } on FirebaseAuthException catch (e) {
+                              MotionToast.error(
+                                      title: "Error",
+                                      titleStyle: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      description: e.message.toString())
+                                  .show(context);
+                              cubit.changeIsLoading();
+                            }
+                          }
+                        },
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  builder: (BuildContext context) => const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.orange,
                       ),
                     ),
                   ),

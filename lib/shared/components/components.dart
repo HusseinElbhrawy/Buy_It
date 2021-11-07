@@ -1,3 +1,4 @@
+import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -112,4 +113,16 @@ class LoginAndSignUpLogoAndTextWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+IconData suffixIconOnOff(BuyItCubit cubit) {
+  return cubit.isVisible ? Icons.visibility_outlined : Icons.visibility_off;
+}
+
+ButtonStyle signUpTextButtonStyle() {
+  return ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(Colors.black),
+      shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.all(Radius.circular(12.5)),
+      )));
 }

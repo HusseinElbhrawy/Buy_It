@@ -51,9 +51,7 @@ class SignUpScreen extends StatelessWidget {
                   keyboardType: TextInputType.visiblePassword,
                   errorMessage: 'Password Must Not Be Empty',
                   secure: cubit.isVisible,
-                  suffixIcon: cubit.isVisible
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off,
+                  suffixIcon: suffixIconOnOff(cubit),
                   suffixIconOnPressed: () {
                     cubit.changeIconVisibility();
                   },
@@ -65,14 +63,7 @@ class SignUpScreen extends StatelessWidget {
                     vertical: MediaQuery.of(context).size.height * 0.028,
                   ),
                   child: TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                          borderRadius: BorderRadiusDirectional.all(
-                              Radius.circular(12.5)),
-                        ))),
+                    style: signUpTextButtonStyle(),
                     onPressed: () async {
                       if (fromKey.currentState!.validate()) {
                         fromKey.currentState!.save();
