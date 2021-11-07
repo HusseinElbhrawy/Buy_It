@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'user_screen.dart';
+import 'user/user_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   static String id = 'SignUpScreen';

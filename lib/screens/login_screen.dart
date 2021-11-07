@@ -1,6 +1,6 @@
-import 'package:buy_it/screens/admin_screen.dart';
+import 'package:buy_it/screens/admin/admin_screen.dart';
 import 'package:buy_it/screens/sign_up_screen.dart';
-import 'package:buy_it/screens/user_screen.dart';
+import 'package:buy_it/screens/user/user_screen.dart';
 import 'package:buy_it/services/auth.dart';
 import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/components/const.dart';

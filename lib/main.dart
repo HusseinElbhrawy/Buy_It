@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:buy_it/screens/admin_screen.dart';
+import 'package:buy_it/screens/admin/add_product.dart';
+import 'package:buy_it/screens/admin/admin_screen.dart';
 import 'package:buy_it/screens/login_screen.dart';
 import 'package:buy_it/screens/sign_up_screen.dart';
-import 'package:buy_it/screens/user_screen.dart';
+import 'package:buy_it/screens/user/user_screen.dart';
 import 'package:buy_it/shared/cubit/bloc_observer.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/styles/styles.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           SignUpScreen.id: (context) => SignUpScreen(),
           UserScreen.id: (context) => const UserScreen(),
           AdminScreen.id: (context) => const AdminScreen(),
+          AddProductScreen.id: (context) => AddProductScreen(),
         },
         theme: lightTheme,
         themeMode: ThemeMode.light,
