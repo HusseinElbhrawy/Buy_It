@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'home_screen.dart';
+import 'user_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   static String id = 'SignUpScreen';
@@ -78,7 +78,7 @@ class SignUpScreen extends StatelessWidget {
                               )
                                   .then((value) {
                                 cubit.changeIsLoading();
-                                Navigator.pushNamed(context, HomeScreen.id);
+                                Navigator.pushNamed(context, UserScreen.id);
                               });
                             } on FirebaseAuthException catch (e) {
                               errorMotionToast(e, context);

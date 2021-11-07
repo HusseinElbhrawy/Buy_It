@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:buy_it/screens/admin_screen.dart';
-import 'package:buy_it/screens/home_screen.dart';
 import 'package:buy_it/screens/login_screen.dart';
 import 'package:buy_it/screens/sign_up_screen.dart';
+import 'package:buy_it/screens/usern_up_screen.dart';
 import 'package:buy_it/shared/cubit/bloc_observer.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/styles/styles.dart';
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         routes: {
           LoginScreen.id: (context) => const LoginScreen(),
           SignUpScreen.id: (context) => const SignUpScreen(),
-          HomeScreen.id: (context) => const HomeScreen(),
+          UserScreen.id: (context) => const UserScreen(),
           AdminScreen.id: (context) => const AdminScreen(),
         },
         theme: lightTheme,
