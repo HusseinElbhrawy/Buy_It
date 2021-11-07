@@ -1,6 +1,8 @@
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/styles/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 class LoginTextFormFiledWidget extends StatelessWidget {
   final String hint;
@@ -125,4 +127,19 @@ ButtonStyle signUpTextButtonStyle() {
       shape: MaterialStateProperty.all(const RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.all(Radius.circular(12.5)),
       )));
+}
+
+void errorMotionToast(FirebaseAuthException e, BuildContext context) {
+  MotionToast.error(
+    title: "Error",
+    titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+    description: e.message.toString(),
+  ).show(context);
+}
+
+EdgeInsets signupAndSignInTextButtonPadding(BuildContext context) {
+  return EdgeInsets.symmetric(
+    horizontal: MediaQuery.of(context).size.width * 0.28,
+    vertical: MediaQuery.of(context).size.height * 0.028,
+  );
 }

@@ -4,15 +4,17 @@ import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
 import 'package:buy_it/shared/styles/colors.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:motion_toast/motion_toast.dart';
+
+import 'home_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   static String id = 'SignUpScreen';
   const SignUpScreen({Key? key}) : super(key: key);
-  static final fromKey = GlobalKey<FormState>();
+  static final formKey = GlobalKey<FormState>();
   static final TextEditingController emailController = TextEditingController();
   static final TextEditingController passwordController =
       TextEditingController();
@@ -26,7 +28,7 @@ class SignUpScreen extends StatelessWidget {
         builder: (BuildContext context, Object? state) {
           BuyItCubit cubit = BuyItCubit.object(context);
           return Form(
-            key: fromKey,
+            key: formKey,
             child: ListView(
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
@@ -57,36 +59,44 @@ class SignUpScreen extends StatelessWidget {
                   },
                   controller: passwordController,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.28,
-                    vertical: MediaQuery.of(context).size.height * 0.028,
-                  ),
-                  child: TextButton(
-                    style: signUpTextButtonStyle(),
-                    onPressed: () async {
-                      if (fromKey.currentState!.validate()) {
-                        fromKey.currentState!.save();
-                        try {
-                          await auth.signUp(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          );
-                        } on FirebaseAuthException catch (e) {
-                          MotionToast.error(
-                                  title: "Error",
-                                  titleStyle: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                  description: e.message.toString())
-                              .show(context);
-                        }
-                      }
-                    },
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        color: Colors.white,
+                ConditionalBuilder(
+                  condition: cubit.isLoading,
+                  fallback: (BuildContext context) {
+                    return Padding(
+                      padding: signupAndSignInTextButtonPadding(context),
+                      child: TextButton(
+                        style: signUpTextButtonStyle(),
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            cubit.changeIsLoading();
+                            try {
+                              await auth
+                                  .signUp(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              )
+                                  .then((value) {
+                                cubit.changeIsLoading();
+                                Navigator.pushNamed(context, HomeScreen.id);
+                              });
+                            } on FirebaseAuthException catch (e) {
+                              errorMotionToast(e, context);
+                              cubit.changeIsLoading();
+                            }
+                          }
+                        },
+                        child: const Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
+                    );
+                  },
+                  builder: (BuildContext context) => const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.orange,
                     ),
                   ),
                 ),

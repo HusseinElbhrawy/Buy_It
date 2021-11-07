@@ -1,3 +1,4 @@
+import 'package:buy_it/screens/home_screen.dart';
 import 'package:buy_it/screens/sign_up_screen.dart';
 import 'package:buy_it/services/auth.dart';
 import 'package:buy_it/shared/components/components.dart';
@@ -9,7 +10,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:motion_toast/motion_toast.dart';
 
 class LoginScreen extends StatelessWidget {
   static String id = 'LoginScreen';
@@ -80,10 +80,7 @@ class LoginScreen extends StatelessWidget {
                   condition: cubit.isLoading,
                   fallback: (BuildContext context) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.28,
-                        vertical: MediaQuery.of(context).size.height * 0.028,
-                      ),
+                      padding: signupAndSignInTextButtonPadding(context),
                       child: TextButton(
                         style: ButtonStyle(
                             backgroundColor:
@@ -104,14 +101,10 @@ class LoginScreen extends StatelessWidget {
                               )
                                   .then((value) {
                                 cubit.changeIsLoading();
+                                Navigator.pushNamed(context, HomeScreen.id);
                               });
                             } on FirebaseAuthException catch (e) {
-                              MotionToast.error(
-                                      title: "Error",
-                                      titleStyle: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                      description: e.message.toString())
-                                  .show(context);
+                              errorMotionToast(e, context);
                               cubit.changeIsLoading();
                             }
                           }
@@ -125,12 +118,9 @@ class LoginScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  builder: (BuildContext context) => const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.orange,
-                      ),
+                  builder: (BuildContext context) => const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.orange,
                     ),
                   ),
                 ),
