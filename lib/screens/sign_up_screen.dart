@@ -68,6 +68,7 @@ class SignUpScreen extends StatelessWidget {
                         style: signUpTextButtonStyle(),
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
+                            formKey.currentState!.save();
                             cubit.changeIsLoading();
                             try {
                               await auth

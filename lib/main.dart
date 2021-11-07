@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:buy_it/screens/admin_screen.dart';
 import 'package:buy_it/screens/home_screen.dart';
 import 'package:buy_it/screens/login_screen.dart';
 import 'package:buy_it/screens/sign_up_screen.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
           LoginScreen.id: (context) => const LoginScreen(),
           SignUpScreen.id: (context) => const SignUpScreen(),
           HomeScreen.id: (context) => const HomeScreen(),
+          AdminScreen.id: (context) => const AdminScreen(),
         },
         theme: lightTheme,
         themeMode: ThemeMode.light,

@@ -18,4 +18,22 @@ class BuyItCubit extends Cubit<BuyItStates> {
     isLoading = !isLoading;
     emit(ChangeIsLoadingSuccessState());
   }
+
+  bool isAdmin = false;
+  var selectedVal = AdminOrUser.USER;
+  void changeAdminOrUser(AdminOrUser value) {
+    selectedVal = value;
+    if (value == AdminOrUser.ADMIN) {
+      isAdmin = true;
+    } else {
+      isAdmin = false;
+    }
+    print('Is Admin = $isAdmin');
+    emit(ChangeBetweenAdminOrUserState());
+  }
+}
+
+enum AdminOrUser {
+  ADMIN,
+  USER,
 }

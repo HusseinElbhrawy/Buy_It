@@ -1,7 +1,8 @@
-import 'package:buy_it/screens/home_screen.dart';
+import 'package:buy_it/screens/admin_screen.dart';
 import 'package:buy_it/screens/sign_up_screen.dart';
 import 'package:buy_it/services/auth.dart';
 import 'package:buy_it/shared/components/components.dart';
+import 'package:buy_it/shared/components/const.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
 import 'package:buy_it/shared/styles/colors.dart';
@@ -10,6 +11,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:motion_toast/motion_toast.dart';
+
+import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   static String id = 'LoginScreen';
@@ -92,20 +96,22 @@ class LoginScreen extends StatelessWidget {
                             ))),
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
+                            formKey.currentState!.save();
                             cubit.changeIsLoading();
-                            try {
-                              await auth
-                                  .signIn(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              )
-                                  .then((value) {
+                            if (cubit.isAdmin) {
+                              if (passwordController.text == KAdminPassword) {
+                                await ifIsAdminTrue(cubit, context);
+                              } else {
+                                adminErrorMotionToast(context);
                                 cubit.changeIsLoading();
-                                Navigator.pushNamed(context, HomeScreen.id);
-                              });
-                            } on FirebaseAuthException catch (e) {
-                              errorMotionToast(e, context);
-                              cubit.changeIsLoading();
+                              }
+                            } else {
+                              if (passwordController.text != KAdminPassword) {
+                                await ifIsUserTrue(cubit, context);
+                              } else {
+                                adminErrorMotionToast(context);
+                                cubit.changeIsLoading();
+                              }
                             }
                           }
                         },
@@ -123,6 +129,31 @@ class LoginScreen extends StatelessWidget {
                       color: Colors.orange,
                     ),
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Radio(
+                      value: AdminOrUser.ADMIN,
+                      groupValue: cubit.selectedVal,
+                      onChanged: (AdminOrUser? value) {
+                        cubit.changeAdminOrUser(value!);
+                      },
+                      fillColor: MaterialStateProperty.all(Colors.deepOrange),
+                    ),
+                    const Text('Admin'),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.070,
+                    ),
+                    Radio(
+                      value: AdminOrUser.USER,
+                      groupValue: cubit.selectedVal,
+                      onChanged: (AdminOrUser? value) {
+                        cubit.changeAdminOrUser(value!);
+                      },
+                    ),
+                    const Text('User'),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -160,5 +191,47 @@ class LoginScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> ifIsUserTrue(BuyItCubit cubit, BuildContext context) async {
+    try {
+      await auth
+          .signIn(
+        email: emailController.text,
+        password: passwordController.text,
+      )
+          .then((value) {
+        cubit.changeIsLoading();
+        Navigator.pushNamed(context, HomeScreen.id);
+      });
+    } on FirebaseAuthException catch (e) {
+      errorMotionToast(e, context);
+      cubit.changeIsLoading();
+    }
+  }
+
+  void adminErrorMotionToast(BuildContext context) {
+    MotionToast.error(
+      title: "Error",
+      titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+      description: 'Something Error !',
+    ).show(context);
+  }
+
+  Future<void> ifIsAdminTrue(BuyItCubit cubit, BuildContext context) async {
+    try {
+      await auth
+          .signIn(
+        email: emailController.text,
+        password: passwordController.text,
+      )
+          .then((value) {
+        cubit.changeIsLoading();
+        Navigator.pushNamed(context, AdminScreen.id);
+      });
+    } on FirebaseAuthException catch (e) {
+      errorMotionToast(e, context);
+      cubit.changeIsLoading();
+    }
   }
 }

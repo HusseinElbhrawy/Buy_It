@@ -7,3 +7,5 @@ class ChangeSuffixIconState extends BuyItStates {}
 class ChangeIsLoadingLoadingState extends BuyItStates {}
 
 class ChangeIsLoadingSuccessState extends BuyItStates {}
+
+class ChangeBetweenAdminOrUserState extends BuyItStates {}
