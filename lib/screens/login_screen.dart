@@ -14,8 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   static String id = 'LoginScreen';
-  const LoginScreen({Key? key}) : super(key: key);
-  static final formKey = GlobalKey<FormState>();
+  LoginScreen({Key? key}) : super(key: key);
+  final formKey = GlobalKey<FormState>();
   static final TextEditingController emailController = TextEditingController();
   static final TextEditingController passwordController =
       TextEditingController();

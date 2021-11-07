@@ -13,8 +13,8 @@ import 'user_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   static String id = 'SignUpScreen';
-  const SignUpScreen({Key? key}) : super(key: key);
-  static final formKey = GlobalKey<FormState>();
+  SignUpScreen({Key? key}) : super(key: key);
+  final formKey = GlobalKey<FormState>();
   static final TextEditingController emailController = TextEditingController();
   static final TextEditingController passwordController =
       TextEditingController();
