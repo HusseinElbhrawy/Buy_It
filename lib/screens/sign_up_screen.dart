@@ -65,7 +65,7 @@ class SignUpScreen extends StatelessWidget {
                     return Padding(
                       padding: signupAndSignInTextButtonPadding(context),
                       child: TextButton(
-                        style: signUpTextButtonStyle(),
+                        style: signUpAndSignInTextButtonStyle(),
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();

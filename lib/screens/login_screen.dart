@@ -76,6 +76,9 @@ class LoginScreen extends StatelessWidget {
                   suffixIconOnPressed: () {
                     cubit.changeIconVisibility();
                   },
+                  onFieldSubmitted: (value) async {
+                    await validCheckFunction(cubit, context);
+                  },
                 ),
                 ConditionalBuilder(
                   condition: cubit.isLoading,
@@ -83,48 +86,9 @@ class LoginScreen extends StatelessWidget {
                     return Padding(
                       padding: signupAndSignInTextButtonPadding(context),
                       child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.black),
-                            shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
-                              borderRadius: BorderRadiusDirectional.all(
-                                  Radius.circular(12.5)),
-                            ))),
+                        style: signUpAndSignInTextButtonStyle(),
                         onPressed: () async {
-                          if (formKey.currentState!.validate()) {
-                            formKey.currentState!.save();
-                            cubit.changeIsLoading();
-                            if (cubit.isAdmin) {
-                              if (passwordController.text == KAdminPassword) {
-                                await ifIsUserOrAdminTrue(
-                                  cubit: cubit,
-                                  context: context,
-                                  auth: auth,
-                                  emailController: emailController,
-                                  passwordController: passwordController,
-                                  screen: AdminScreen.id,
-                                );
-                              } else {
-                                adminErrorMotionToast(context);
-                                cubit.changeIsLoading();
-                              }
-                            } else {
-                              if (passwordController.text != KAdminPassword) {
-                                await ifIsUserOrAdminTrue(
-                                  cubit: cubit,
-                                  context: context,
-                                  emailController: emailController,
-                                  passwordController: passwordController,
-                                  auth: auth,
-                                  screen: UserScreen.id,
-                                );
-                              } else {
-                                adminErrorMotionToast(context);
-                                cubit.changeIsLoading();
-                              }
-                            }
-                          }
+                          await validCheckFunction(cubit, context);
                         },
                         child: const Text(
                           'Login',
@@ -208,5 +172,42 @@ class LoginScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> validCheckFunction(
+      BuyItCubit cubit, BuildContext context) async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      cubit.changeIsLoading();
+      if (cubit.isAdmin) {
+        if (passwordController.text == KAdminPassword) {
+          await ifIsUserOrAdminTrue(
+            cubit: cubit,
+            context: context,
+            auth: auth,
+            emailController: emailController,
+            passwordController: passwordController,
+            screen: AdminScreen.id,
+          );
+        } else {
+          adminErrorMotionToast(context);
+          cubit.changeIsLoading();
+        }
+      } else {
+        if (passwordController.text != KAdminPassword) {
+          await ifIsUserOrAdminTrue(
+            cubit: cubit,
+            context: context,
+            emailController: emailController,
+            passwordController: passwordController,
+            auth: auth,
+            screen: UserScreen.id,
+          );
+        } else {
+          adminErrorMotionToast(context);
+          cubit.changeIsLoading();
+        }
+      }
+    }
   }
 }

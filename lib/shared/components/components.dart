@@ -13,6 +13,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
   final String errorMessage;
   final bool secure;
   final Function? suffixIconOnPressed;
+  final Function? onFieldSubmitted;
   final TextEditingController? controller;
   const LoginTextFormFiledWidget({
     Key? key,
@@ -24,6 +25,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
     this.suffixIcon,
     this.suffixIconOnPressed,
     this.controller,
+    this.onFieldSubmitted,
   }) : super(key: key);
 
   @override
@@ -35,6 +37,7 @@ class LoginTextFormFiledWidget extends StatelessWidget {
         bottom: MediaQuery.of(context).size.width * 0.050,
       ),
       child: TextFormField(
+        onFieldSubmitted: (value) => onFieldSubmitted!(value),
         controller: controller,
         obscureText: secure,
         validator: (value) {
@@ -122,7 +125,7 @@ IconData suffixIconOnOff(BuyItCubit cubit) {
   return cubit.isVisible ? Icons.visibility_outlined : Icons.visibility_off;
 }
 
-ButtonStyle signUpTextButtonStyle() {
+ButtonStyle signUpAndSignInTextButtonStyle() {
   return ButtonStyle(
       backgroundColor: MaterialStateProperty.all(Colors.black),
       shape: MaterialStateProperty.all(const RoundedRectangleBorder(
