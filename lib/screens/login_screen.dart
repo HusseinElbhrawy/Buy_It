@@ -152,7 +152,10 @@ class LoginScreen extends StatelessWidget {
                       },
                       fillColor: MaterialStateProperty.all(Colors.deepOrange),
                     ),
-                    const Text('Admin'),
+                    const Text(
+                      'Admin',
+                      style: TextStyle(fontFamily: 'Jannah'),
+                    ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.070,
                     ),
@@ -163,7 +166,10 @@ class LoginScreen extends StatelessWidget {
                         cubit.changeAdminOrUser(value!);
                       },
                     ),
-                    const Text('User'),
+                    const Text(
+                      'User',
+                      style: TextStyle(fontFamily: 'Jannah'),
+                    ),
                   ],
                 ),
                 Padding(
