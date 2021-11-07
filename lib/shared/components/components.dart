@@ -1,3 +1,4 @@
+import 'package:buy_it/services/auth.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/styles/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -142,4 +143,36 @@ EdgeInsets signupAndSignInTextButtonPadding(BuildContext context) {
     horizontal: MediaQuery.of(context).size.width * 0.28,
     vertical: MediaQuery.of(context).size.height * 0.028,
   );
+}
+
+Future<void> ifIsUserOrAdminTrue({
+  required BuyItCubit cubit,
+  required BuildContext context,
+  required Auth auth,
+  required TextEditingController emailController,
+  required TextEditingController passwordController,
+  required String screen,
+}) async {
+  try {
+    await auth
+        .signIn(
+      email: emailController.text,
+      password: passwordController.text,
+    )
+        .then((value) {
+      cubit.changeIsLoading();
+      Navigator.pushNamed(context, screen);
+    });
+  } on FirebaseAuthException catch (e) {
+    errorMotionToast(e, context);
+    cubit.changeIsLoading();
+  }
+}
+
+void adminErrorMotionToast(BuildContext context) {
+  MotionToast.error(
+    title: "Error",
+    titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+    description: 'Something Error !',
+  ).show(context);
 }
