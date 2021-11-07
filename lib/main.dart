@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:buy_it/screens/admin_screen.dart';
 import 'package:buy_it/screens/login_screen.dart';
 import 'package:buy_it/screens/sign_up_screen.dart';
-import 'package:buy_it/screens/usern_up_screen.dart';
+import 'package:buy_it/screens/user_screen.dart';
 import 'package:buy_it/shared/cubit/bloc_observer.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/styles/styles.dart';
