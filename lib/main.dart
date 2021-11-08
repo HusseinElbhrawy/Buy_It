@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:buy_it/screens/admin/add_product.dart';
 import 'package:buy_it/screens/admin/admin_screen.dart';
+import 'package:buy_it/screens/admin/edit_prodcut.dart';
 import 'package:buy_it/screens/login_screen.dart';
 import 'package:buy_it/screens/sign_up_screen.dart';
 import 'package:buy_it/screens/user/user_screen.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           UserScreen.id: (context) => const UserScreen(),
           AdminScreen.id: (context) => const AdminScreen(),
           AddProductScreen.id: (context) => AddProductScreen(),
+          EditProductScreen.id: (context) => const EditProductScreen(),
         },
         theme: lightTheme,
         themeMode: ThemeMode.light,

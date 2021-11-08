@@ -16,4 +16,22 @@ class Store {
       print(value);
     });
   }
+
+  Future<List<Product>> getAllProducts() async {
+    var snapshot = await firebaseFirestore.collection(KProdcutCollection).get();
+    List<Product> products = [];
+    for (var doc in snapshot.docs) {
+      var data = doc.data();
+      products.add(
+        Product(
+          productName: data[KProdcutName],
+          productPrice: data[KProdcutPrice],
+          productDescription: data[KProdcutDescription],
+          productCategory: data[KProdcutCategory],
+          productLocation: data[KProdcutLocation],
+        ),
+      );
+    }
+    return products;
+  }
 }
