@@ -1,4 +1,5 @@
 import 'package:buy_it/models/product_model.dart';
+import 'package:buy_it/screens/admin/edit_prodcut.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +22,7 @@ class AdminScreen extends StatelessWidget {
               icon: const Icon(Icons.add)),
           IconButton(
               onPressed: () async {
-                products = await store.getAllProducts();
-                print(products[0].productDescription);
+                Navigator.pushNamed(context, EditProductScreen.id);
               },
               icon: const Icon(Icons.eleven_mp)),
         ],

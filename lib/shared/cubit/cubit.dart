@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:buy_it/models/product_model.dart';
+import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/cubit/states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,6 +33,15 @@ class BuyItCubit extends Cubit<BuyItStates> {
     print('Is Admin = $isAdmin');
     emit(ChangeBetweenAdminOrUserState());
   }
+
+  final Store store = Store();
+  List<Product> allProducts = [];
+
+  void getAllProducts() async {
+    allProducts = await store.getAllProducts();
+  }
+
+  bool isAddingProduct = false;
 }
 
 enum AdminOrUser {

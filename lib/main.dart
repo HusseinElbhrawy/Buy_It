@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           UserScreen.id: (context) => const UserScreen(),
           AdminScreen.id: (context) => const AdminScreen(),
           AddProductScreen.id: (context) => AddProductScreen(),
-          EditProductScreen.id: (context) => const EditProductScreen(),
+          EditProductScreen.id: (context) => EditProductScreen(),
         },
         theme: lightTheme,
         themeMode: ThemeMode.light,

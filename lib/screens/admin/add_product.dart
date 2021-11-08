@@ -1,7 +1,9 @@
 import 'package:buy_it/models/product_model.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/components.dart';
+import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 class AddProductScreen extends StatelessWidget {
   AddProductScreen({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class AddProductScreen extends StatelessWidget {
   static var productLocation = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final Store firebaseStore = Store();
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -91,40 +94,59 @@ class AddProductScreen extends StatelessWidget {
                     end: width * 0.045,
                   ),
                   width: double.infinity,
-                  child: TextButton(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        formKey.currentState!.save();
-                        await firebaseStore.addProduct(
-                          Product(
-                            productName: productName.text,
-                            productPrice: productPrice.text,
-                            productDescription: productDescription.text,
-                            productCategory: productCategory.text,
-                            productLocation: productLocation.text,
-                          ),
-                        );
-                      }
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        Colors.black,
-                      ),
-                      shape: MaterialStateProperty.all(
-                        const RoundedRectangleBorder(
-                          borderRadius: BorderRadiusDirectional.all(
-                            Radius.circular(10),
+                  child: Builder(builder: (context) {
+                    var cubit = BuyItCubit.object(context);
+                    return TextButton(
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
+                          try {
+                            await firebaseStore.addProduct(
+                              Product(
+                                productName: productName.text,
+                                productPrice: productPrice.text,
+                                productDescription: productDescription.text,
+                                productCategory: productCategory.text,
+                                productLocation: productLocation.text,
+                              ),
+                            );
+                            MotionToast.success(
+                              title: "Success",
+                              titleStyle:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                              description: 'Added Product Successfully ',
+                            ).show(context);
+                            clearAllControllerData();
+                          } catch (e) {
+                            MotionToast.error(
+                              title: "Error",
+                              titleStyle:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                              description: 'SomeThing Error ',
+                            ).show(context);
+                          }
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.black,
+                        ),
+                        shape: MaterialStateProperty.all(
+                          const RoundedRectangleBorder(
+                            borderRadius: BorderRadiusDirectional.all(
+                              Radius.circular(10),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    child: const Text(
-                      'Add Product',
-                      style: TextStyle(
-                        color: Colors.white,
+                      child: const Text(
+                        'Add Product',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
               )
             ],
@@ -132,5 +154,13 @@ class AddProductScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void clearAllControllerData() {
+    productName.clear();
+    productPrice.clear();
+    productDescription.clear();
+    productCategory.clear();
+    productLocation.clear();
   }
 }
