@@ -1,10 +1,7 @@
 import 'package:buy_it/models/product_model.dart';
 import 'package:buy_it/services/store.dart';
-import 'package:buy_it/shared/cubit/cubit.dart';
-import 'package:buy_it/shared/cubit/states.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditProductScreen extends StatelessWidget {
   EditProductScreen({Key? key}) : super(key: key);
@@ -13,32 +10,25 @@ class EditProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<BuyItCubit, BuyItStates>(
-        listener: (BuildContext context, state) {},
-        builder: (BuildContext context, Object? state) {
-          var cubit = BuyItCubit.object(context);
-          return FutureBuilder<List<Product>>(
-            future: store.getAllProducts(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
-              return ConditionalBuilder(
-                condition: snapshot.hasData,
-                builder: (BuildContext context) => ListView.separated(
-                  itemBuilder: (context, index) => Text(
-                    snapshot.data![index].productName,
-                    style: const TextStyle(fontSize: 25.0),
-                  ),
-                  itemCount: snapshot.data!.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
-                ),
-                fallback: (BuildContext context) => const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.deepOrange,
-                  ),
-                ),
-              );
-            },
+      body: FutureBuilder<List<Product>>(
+        future: store.getAllProducts(),
+        builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+          return ConditionalBuilder(
+            condition: snapshot.hasData,
+            builder: (BuildContext context) => ListView.separated(
+              itemBuilder: (context, index) => Text(
+                snapshot.data![index].productName,
+                style: const TextStyle(fontSize: 25.0),
+              ),
+              itemCount: snapshot.data!.length,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+            ),
+            fallback: (BuildContext context) => const Center(
+              child: CircularProgressIndicator(
+                color: Colors.deepOrange,
+              ),
+            ),
           );
         },
       ),

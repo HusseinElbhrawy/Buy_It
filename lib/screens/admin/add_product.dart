@@ -1,7 +1,6 @@
 import 'package:buy_it/models/product_model.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/components.dart';
-import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
 
@@ -95,7 +94,6 @@ class AddProductScreen extends StatelessWidget {
                   ),
                   width: double.infinity,
                   child: Builder(builder: (context) {
-                    var cubit = BuyItCubit.object(context);
                     return TextButton(
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
