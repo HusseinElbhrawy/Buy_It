@@ -17,6 +17,7 @@ class Store {
     });
   }
 
+/*
   Future<List<Product>> getAllProducts() async {
     var snapshot = await firebaseFirestore.collection(KProdcutCollection).get();
     List<Product> products = [];
@@ -33,5 +34,10 @@ class Store {
       );
     }
     return products;
+  }
+*/
+
+  getAllProducts() {
+    return firebaseFirestore.collection(KProdcutCollection).snapshots();
   }
 }
