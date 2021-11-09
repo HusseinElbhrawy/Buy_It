@@ -20,14 +20,89 @@ class EditProductScreen extends StatelessWidget {
             builder: (BuildContext context) {
               List<Product> products = [];
               addNewProductWithSnapshot(snapshot, products);
-              return ListView.separated(
-                itemBuilder: (context, index) => Text(
-                  products[index].productName,
-                  style: const TextStyle(fontSize: 25.0),
+              return GridView.builder(
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 10.0),
+                  child: Container(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadiusDirectional.all(Radius.circular(
+                        15.0,
+                      )),
+                    ),
+                    child: GestureDetector(
+                      onTapUp: (details) {
+                        var dx = details.globalPosition.dx;
+                        var dy = details.globalPosition.dy;
+                        var width = MediaQuery.of(context).size.width;
+                        var height = MediaQuery.of(context).size.height;
+                        showMenu(
+                          context: context,
+                          position: RelativeRect.fromLTRB(
+                              dx, dy, width - dx, height - dy),
+                          items: [
+                            const PopupMenuItem(
+                              child: Text('Edit'),
+                            ),
+                            const PopupMenuItem(
+                              child: Text('Delete'),
+                            ),
+                          ],
+                        );
+                      },
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Image.network(
+                              products[index].productLocation,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            child: Opacity(
+                              opacity: .5,
+                              child: Container(
+                                color: Colors.white,
+                                height: 60.0,
+                                width: MediaQuery.of(context).size.width,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        products[index].productName,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Jannah',
+                                        ),
+                                      ),
+                                      Text(
+                                        "\$ ${products[index].productPrice}",
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
                 itemCount: products.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1 / 1.5,
+                ),
               );
             },
             fallback: (BuildContext context) => const Center(
