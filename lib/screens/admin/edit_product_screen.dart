@@ -1,19 +1,22 @@
-import 'package:buy_it/models/product_model.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/components.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
 
-class AddProductScreen extends StatelessWidget {
-  AddProductScreen({Key? key}) : super(key: key);
-  static const id = 'AppProduct';
-  static var productName = TextEditingController();
-  static var productPrice = TextEditingController();
-  static var productDescription = TextEditingController();
-  static var productCategory = TextEditingController();
-  static var productLocation = TextEditingController();
+class EditProductScreen extends StatelessWidget {
+  static const String id = 'EditProductScreen';
+  static final productName = TextEditingController();
+  static final productPrice = TextEditingController();
+  static final productDescription = TextEditingController();
+  static final productCategory = TextEditingController();
+  static final productLocation = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
-  final Store firebaseStore = Store();
+
+  final firebaseStore = Store();
+
+  EditProductScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class AddProductScreen extends StatelessWidget {
       key: formKey,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add Product '),
+          title: const Text('Edit  Product '),
           elevation: 0.0,
           leading: IconButton(
             icon: const Icon(
@@ -52,35 +55,35 @@ class AddProductScreen extends StatelessWidget {
                 height: height * 0.050,
               ),
               LoginTextFormFiledWidget(
-                controller: productName,
+                controller: EditProductScreen.productName,
                 prefixIcon: Icons.info,
                 hint: 'Product Name',
                 errorMessage: 'Product Name Must Not Be Empty',
                 keyboardType: TextInputType.text,
               ),
               LoginTextFormFiledWidget(
-                controller: productPrice,
+                controller: EditProductScreen.productPrice,
                 prefixIcon: Icons.info,
                 hint: 'Product Price',
                 errorMessage: 'Product Price Must Not Be Empty',
                 keyboardType: TextInputType.text,
               ),
               LoginTextFormFiledWidget(
-                controller: productDescription,
+                controller: EditProductScreen.productDescription,
                 prefixIcon: Icons.info,
                 hint: 'Product Description',
                 errorMessage: 'Product Description Must Not Be Empty',
                 keyboardType: TextInputType.text,
               ),
               LoginTextFormFiledWidget(
-                controller: productCategory,
+                controller: EditProductScreen.productCategory,
                 prefixIcon: Icons.info,
                 hint: 'Product Category',
                 errorMessage: 'Product Category Must Not Be Empty',
                 keyboardType: TextInputType.text,
               ),
               LoginTextFormFiledWidget(
-                controller: productLocation,
+                controller: EditProductScreen.productLocation,
                 prefixIcon: Icons.info,
                 hint: 'Product Image',
                 errorMessage: 'Product Location Must Not Be Empty',
@@ -99,20 +102,30 @@ class AddProductScreen extends StatelessWidget {
                         if (formKey.currentState!.validate()) {
                           formKey.currentState!.save();
                           try {
-                            await firebaseStore.addProduct(
-                              Product(
-                                productName: productName.text,
-                                productPrice: productPrice.text,
-                                productDescription: productDescription.text,
-                                productCategory: productCategory.text,
-                                productImage: productLocation.text,
+                            //TODO: Logic of Editing  here
+                            /*firebaseStore
+                                .editProduct(
+                              product: Product(
+                                productName: EditProductScreen.productName.text,
+                                productPrice:
+                                    EditProductScreen.productPrice.text,
+                                productDescription:
+                                    EditProductScreen.productDescription.text,
+                                productCategory:
+                                    EditProductScreen.productCategory.text,
+                                productImage:
+                                    EditProductScreen.productLocation.text,
                               ),
-                            );
+                              productId: product.productId,
+                            )
+                                .then((value) {
+                              print({'$value Edit Successfully'});
+                            });*/
                             MotionToast.success(
                               title: "Success",
                               titleStyle:
                                   const TextStyle(fontWeight: FontWeight.bold),
-                              description: 'Added Product Successfully ',
+                              description: 'Edit Product Successfully ',
                             ).show(context);
                             clearAllControllerData();
                           } catch (e) {
@@ -138,7 +151,7 @@ class AddProductScreen extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Add Product',
+                        'Edit  Product',
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -155,10 +168,10 @@ class AddProductScreen extends StatelessWidget {
   }
 
   void clearAllControllerData() {
-    productName.clear();
-    productPrice.clear();
-    productDescription.clear();
-    productCategory.clear();
-    productLocation.clear();
+    EditProductScreen.productName.clear();
+    EditProductScreen.productPrice.clear();
+    EditProductScreen.productDescription.clear();
+    EditProductScreen.productCategory.clear();
+    EditProductScreen.productLocation.clear();
   }
 }

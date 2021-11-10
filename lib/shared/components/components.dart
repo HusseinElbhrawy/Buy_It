@@ -48,7 +48,10 @@ class LoginTextFormFiledWidget extends StatelessWidget {
         },
         keyboardType: keyboardType,
         cursorColor: KMainColor,
-        decoration: textFormFieldDecoration(icon: prefixIcon, hint: hint),
+        decoration: textFormFieldDecoration(
+          icon: prefixIcon,
+          hint: hint,
+        ),
       ),
     );
   }

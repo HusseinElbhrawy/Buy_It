@@ -1,13 +1,14 @@
 import 'package:buy_it/models/product_model.dart';
+import 'package:buy_it/screens/admin/edit_product_screen.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/const.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 
-class EditProductScreen extends StatelessWidget {
-  EditProductScreen({Key? key}) : super(key: key);
-  static const id = 'EditProductScreen';
+class ManagedProductScreen extends StatelessWidget {
+  ManagedProductScreen({Key? key}) : super(key: key);
+  static const id = 'ManagedProductScreen';
   final store = Store();
   @override
   Widget build(BuildContext context) {
@@ -45,13 +46,23 @@ class EditProductScreen extends StatelessWidget {
                             MyPopUpMenuItem(
                               childWidget: const Text('Edit'),
                               onClick: () {
+                                Navigator.popAndPushNamed(
+                                    context, EditProductScreen.id);
                                 print('Edit');
                               },
                             ),
                             MyPopUpMenuItem(
                               childWidget: const Text('Delete'),
                               onClick: () {
-                                print('Delete');
+                                store
+                                    .deleteProduct(
+                                        productId: products[index].productId)
+                                    .then(
+                                  (value) {
+                                    print('${value.value} Delete Successfully');
+                                  },
+                                );
+                                Navigator.pop(context);
                               },
                             ),
                           ],
@@ -61,7 +72,7 @@ class EditProductScreen extends StatelessWidget {
                         children: [
                           Positioned.fill(
                             child: Image.network(
-                              products[index].productLocation,
+                              products[index].productImage.toString(),
                               fit: BoxFit.fill,
                             ),
                           ),
@@ -129,11 +140,13 @@ class EditProductScreen extends StatelessWidget {
       var data = doc.data();
       products.add(
         Product(
+          productId: doc.id,
           productName: data[KProdcutName],
-          productPrice: data[KProdcutPrice],
-          productDescription: data[KProdcutDescription],
-          productCategory: data[KProdcutCategory],
-          productLocation: data[KProdcutLocation],
+          productPrice: data[KProdcutPrice] ?? '0',
+          productDescription: data[KProdcutDescription] ?? '',
+          productCategory: data[KProdcutCategory] ?? '',
+          productImage: data[KProdcutImage] ??
+              'https://st.depositphotos.com/2885805/3842/v/600/depositphotos_38422667-stock-illustration-coming-soon-message-illuminated-with.jpg',
         ),
       );
     }
@@ -157,6 +170,5 @@ class MyPopUpMenuItemState<T, PopMenuItem>
   @override
   void handleTap() {
     widget.onClick();
-    Navigator.pop(context);
   }
 }

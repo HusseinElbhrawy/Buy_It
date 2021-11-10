@@ -10,7 +10,7 @@ class Store {
       KProdcutName: product.productName,
       KProdcutCategory: product.productCategory,
       KProdcutDescription: product.productDescription,
-      KProdcutLocation: product.productLocation,
+      KProdcutImage: product.productImage,
       KProdcutPrice: product.productPrice,
     }).then((value) {
       print(value);
@@ -39,5 +39,18 @@ class Store {
 
   getAllProducts() {
     return firebaseFirestore.collection(KProdcutCollection).snapshots();
+  }
+
+  Future deleteProduct({productId}) async {
+    return await firebaseFirestore
+        .collection(KProdcutCollection)
+        .doc(productId)
+        .delete();
+  }
+
+  Future editProduct({product, productId}) async {
+    await firebaseFirestore.collection(KProdcutCollection).doc(productId).set(
+          product,
+        );
   }
 }
