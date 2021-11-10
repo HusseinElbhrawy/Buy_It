@@ -43,13 +43,13 @@ class EditProductScreen extends StatelessWidget {
                               dx, dy, width - dx, height - dy),
                           items: [
                             MyPopUpMenuItem(
-                              childWidget: Text('Edit'),
+                              childWidget: const Text('Edit'),
                               onClick: () {
                                 print('Edit');
                               },
                             ),
                             MyPopUpMenuItem(
-                              childWidget: Text('Delete'),
+                              childWidget: const Text('Delete'),
                               onClick: () {
                                 print('Delete');
                               },
