@@ -48,9 +48,23 @@ class Store {
         .delete();
   }
 
-  Future editProduct({product, productId}) async {
-    await firebaseFirestore.collection(KProdcutCollection).doc(productId).set(
-          product,
-        );
+  Future editProduct({
+    required Product product,
+    productId,
+  }) async {
+    await firebaseFirestore
+        .collection(KProdcutCollection)
+        .doc(productId)
+        .update({
+      KProdcutName: product.productName,
+      KProdcutCategory: product.productCategory,
+      KProdcutDescription: product.productDescription,
+      KProdcutPrice: product.productPrice,
+      KProdcutImage: product.productImage,
+    });
+  }
+
+  Future getProductData({id}) async {
+    return await firebaseFirestore.collection(KProdcutCollection).doc(id).get();
   }
 }

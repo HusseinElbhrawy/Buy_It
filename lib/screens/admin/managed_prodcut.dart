@@ -47,7 +47,11 @@ class ManagedProductScreen extends StatelessWidget {
                               childWidget: const Text('Edit'),
                               onClick: () {
                                 Navigator.popAndPushNamed(
-                                    context, EditProductScreen.id);
+                                  context,
+                                  EditProductScreen.id,
+                                  arguments: products[index],
+                                );
+
                                 print('Edit');
                               },
                             ),

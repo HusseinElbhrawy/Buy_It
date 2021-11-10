@@ -1,3 +1,4 @@
+import 'package:buy_it/models/product_model.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/components.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
 
 class EditProductScreen extends StatelessWidget {
+/*  @override
+  void initState() {
+    firebaseStore
+        .getProductData(
+      id: widget.products[index].productId.toString(),
+    )
+        .then((value) {
+      print(value['productName']);
+    });
+  }*/
   static const String id = 'EditProductScreen';
   static final productName = TextEditingController();
   static final productPrice = TextEditingController();
@@ -22,6 +33,7 @@ class EditProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    Product product = ModalRoute.of(context)!.settings.arguments as Product;
     return Form(
       key: formKey,
       child: Scaffold(
@@ -103,8 +115,9 @@ class EditProductScreen extends StatelessWidget {
                           formKey.currentState!.save();
                           try {
                             //TODO: Logic of Editing  here
-                            /*firebaseStore
+                            firebaseStore
                                 .editProduct(
+                              productId: product.productId,
                               product: Product(
                                 productName: EditProductScreen.productName.text,
                                 productPrice:
@@ -116,11 +129,10 @@ class EditProductScreen extends StatelessWidget {
                                 productImage:
                                     EditProductScreen.productLocation.text,
                               ),
-                              productId: product.productId,
                             )
                                 .then((value) {
-                              print({'$value Edit Successfully'});
-                            });*/
+                              print({'Edit Successfully'});
+                            });
                             MotionToast.success(
                               title: "Success",
                               titleStyle:
