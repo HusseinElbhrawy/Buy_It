@@ -5,3 +5,7 @@ const KProdcutDescription = 'productDescription';
 const KProdcutImage = 'productLocation';
 const KProdcutCategory = 'productCategory';
 const KProdcutCollection = 'productCollection';
+const KJacket = 'jacket';
+const KTrouser = 'trouser';
+const KShose = 'shoes';
+const KTShirt = 't-shirt';

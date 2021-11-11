@@ -1,12 +1,10 @@
 import 'package:buy_it/models/product_model.dart';
-import 'package:buy_it/screens/admin/managed_product.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/components.dart';
+import 'package:buy_it/shared/components/const.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
 import 'package:buy_it/shared/styles/colors.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,6 +12,11 @@ class UserScreen extends StatelessWidget {
   UserScreen({Key? key}) : super(key: key);
   static const String id = 'HomeScreen';
   final store = Store();
+  final List<Product> jacketProducts = [];
+  final List<Product> trouserProducts = [];
+  final List<Product> shoesProducts = [];
+  final List<Product> tShirtProducts = [];
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -33,6 +36,7 @@ class UserScreen extends StatelessWidget {
                   currentIndex: cubit.bottomNavigationBarIndex,
                   onTap: (value) {
                     cubit.changeBottomNavigationBarIndex(value);
+                    print(tShirtProducts.length);
                   },
                   items: const [
                     BottomNavigationBarItem(
@@ -63,19 +67,19 @@ class UserScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Tab 2',
+                        'Trousers',
                         style: TextStyle(
                           color: Colors.black,
                         ),
                       ),
                       Text(
-                        'Tab 3',
+                        'shoes',
                         style: TextStyle(
                           color: Colors.black,
                         ),
                       ),
                       Text(
-                        'Tab 4',
+                        'T-Shirt',
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -85,16 +89,22 @@ class UserScreen extends StatelessWidget {
                 ),
                 body: TabBarView(
                   children: [
-                    jacketWidget(),
-                    const Center(
-                      child: Text('Testing 2'),
-                    ),
-                    const Center(
-                      child: Text('Testing 3'),
-                    ),
-                    const Center(
-                      child: Text('Testing 4'),
-                    ),
+                    tabBarItemViewWidget(
+                        categoryProduct: jacketProducts,
+                        category: KJacket,
+                        store: store),
+                    tabBarItemViewWidget(
+                        categoryProduct: trouserProducts,
+                        category: KTrouser,
+                        store: store),
+                    tabBarItemViewWidget(
+                        categoryProduct: shoesProducts,
+                        category: KShose,
+                        store: store),
+                    tabBarItemViewWidget(
+                        categoryProduct: tShirtProducts,
+                        category: KTShirt,
+                        store: store),
                   ],
                 ),
               );
@@ -129,41 +139,6 @@ class UserScreen extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget jacketWidget() {
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: store.getAllProducts(),
-      builder: (BuildContext context, snapshot) {
-        return ConditionalBuilder(
-          condition: snapshot.hasData,
-          builder: (BuildContext context) {
-            List<Product> products = [];
-            addNewProductWithSnapshot(snapshot, products);
-            return GridView.builder(
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0, vertical: 10.0),
-                child: BuyItItemWidget(
-                  index: index,
-                  products: products,
-                ),
-              ),
-              itemCount: products.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1 / 1.5,
-              ),
-            );
-          },
-          fallback: (BuildContext context) => const Center(
-            child: CircularProgressIndicator(
-              color: Colors.deepOrange,
-            ),
-          ),
-        );
-      },
     );
   }
 }

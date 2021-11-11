@@ -1,10 +1,15 @@
 import 'package:buy_it/models/product_model.dart';
 import 'package:buy_it/services/auth.dart';
+import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/styles/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
+
+import '../functions.dart';
 
 class LoginTextFormFiledWidget extends StatelessWidget {
   final String hint;
@@ -242,4 +247,49 @@ class BuyItItemWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget tabBarItemViewWidget({
+  required List<Product> categoryProduct,
+  required String category,
+  required Store store,
+}) {
+  return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+    stream: store.getAllProducts(),
+    builder: (BuildContext context, snapshot) {
+      return ConditionalBuilder(
+        condition: snapshot.hasData,
+        builder: (BuildContext context) {
+          List<Product> products = [];
+          categoryProduct = [];
+          addNewProductWithSnapshot(snapshot, products);
+          for (var pro in products) {
+            if (pro.productCategory == category) {
+              categoryProduct.add(pro);
+            }
+          }
+          return GridView.builder(
+            itemBuilder: (context, index) => Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+              child: BuyItItemWidget(
+                index: index,
+                products: categoryProduct,
+              ),
+            ),
+            itemCount: categoryProduct.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1 / 1.5,
+            ),
+          );
+        },
+        fallback: (BuildContext context) => const Center(
+          child: CircularProgressIndicator(
+            color: Colors.deepOrange,
+          ),
+        ),
+      );
+    },
+  );
 }

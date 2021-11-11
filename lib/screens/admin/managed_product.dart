@@ -1,7 +1,7 @@
 import 'package:buy_it/models/product_model.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/components.dart';
-import 'package:buy_it/shared/components/const.dart';
+import 'package:buy_it/shared/functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -44,26 +44,6 @@ class ManagedProductScreen extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-void addNewProductWithSnapshot(
-  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
-  List<Product> products,
-) {
-  for (var doc in snapshot.data!.docs) {
-    var data = doc.data();
-    products.add(
-      Product(
-        productId: doc.id,
-        productName: data[KProdcutName],
-        productPrice: data[KProdcutPrice] ?? '0',
-        productDescription: data[KProdcutDescription] ?? '',
-        productCategory: data[KProdcutCategory] ?? '',
-        productImage: data[KProdcutImage] ??
-            'https://st.depositphotos.com/2885805/3842/v/600/depositphotos_38422667-stock-illustration-coming-soon-message-illuminated-with.jpg',
       ),
     );
   }

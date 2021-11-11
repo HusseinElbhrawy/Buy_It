@@ -73,8 +73,8 @@ class SignUpScreen extends StatelessWidget {
                             try {
                               await auth
                                   .signUp(
-                                email: emailController.text,
-                                password: passwordController.text,
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
                               )
                                   .then((value) {
                                 cubit.changeIsLoading();
