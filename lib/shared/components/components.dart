@@ -1,3 +1,4 @@
+import 'package:buy_it/models/product_model.dart';
 import 'package:buy_it/services/auth.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/styles/colors.dart';
@@ -181,4 +182,64 @@ void adminErrorMotionToast(BuildContext context) {
     titleStyle: const TextStyle(fontWeight: FontWeight.bold),
     description: 'Something Error !',
   ).show(context);
+}
+
+class BuyItItemWidget extends StatelessWidget {
+  const BuyItItemWidget({Key? key, required this.index, required this.products})
+      : super(key: key);
+  final List<Product> products;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadiusDirectional.circular(15),
+      ),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.network(
+              products[index].productImage.toString(),
+              fit: BoxFit.fill,
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: Opacity(
+              opacity: .5,
+              child: Container(
+                color: Colors.white,
+                height: 60.0,
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        products[index].productName,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Jannah',
+                        ),
+                      ),
+                      Text(
+                        "\$ ${products[index].productPrice}",
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

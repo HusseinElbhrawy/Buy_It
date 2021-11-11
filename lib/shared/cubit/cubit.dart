@@ -46,8 +46,13 @@ class BuyItCubit extends Cubit<BuyItStates> {
   int tabBarIndex = 0;
   void changeTabBarIndex(int index) {
     tabBarIndex = index;
-    print(tabBarIndex);
     emit(ChangeTabBarIndexState());
+  }
+
+  int bottomNavigationBarIndex = 0;
+  void changeBottomNavigationBarIndex(int index) {
+    bottomNavigationBarIndex = index;
+    emit(ChangeBottomNavigationBarIndexState());
   }
 }
 

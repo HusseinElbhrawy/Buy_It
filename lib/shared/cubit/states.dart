@@ -11,3 +11,5 @@ class ChangeIsLoadingSuccessState extends BuyItStates {}
 class ChangeBetweenAdminOrUserState extends BuyItStates {}
 
 class ChangeTabBarIndexState extends BuyItStates {}
+
+class ChangeBottomNavigationBarIndexState extends BuyItStates {}

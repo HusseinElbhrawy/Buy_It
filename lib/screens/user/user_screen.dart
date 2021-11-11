@@ -1,12 +1,19 @@
+import 'package:buy_it/models/product_model.dart';
+import 'package:buy_it/screens/admin/managed_product.dart';
+import 'package:buy_it/services/store.dart';
+import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
 import 'package:buy_it/shared/styles/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserScreen extends StatelessWidget {
-  const UserScreen({Key? key}) : super(key: key);
+  UserScreen({Key? key}) : super(key: key);
   static const String id = 'HomeScreen';
+  final store = Store();
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -18,19 +25,39 @@ class UserScreen extends StatelessWidget {
             builder: (BuildContext context, Object? state) {
               var cubit = BuyItCubit.object(context);
               return Scaffold(
+                backgroundColor: Colors.white,
+                bottomNavigationBar: BottomNavigationBar(
+                  elevation: 0.0,
+                  backgroundColor: Colors.white,
+                  selectedItemColor: KMainColor,
+                  currentIndex: cubit.bottomNavigationBarIndex,
+                  onTap: (value) {
+                    cubit.changeBottomNavigationBarIndex(value);
+                  },
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.person),
+                      label: 'Testing',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.add),
+                      label: 'Testing',
+                    ),
+                  ],
+                ),
                 appBar: AppBar(
+                  elevation: 0.0,
+                  backgroundColor: Colors.white,
                   automaticallyImplyLeading: false,
                   bottom: TabBar(
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.black,
                     physics: const ScrollPhysics(),
-                    indicatorColor: KSeconderyColor,
+                    indicatorColor: KMainColor,
                     onTap: (value) {
                       cubit.changeTabBarIndex(value);
                     },
                     tabs: const [
                       Text(
-                        'Tab 1',
+                        'Jackets',
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -56,18 +83,16 @@ class UserScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                body: const TabBarView(
+                body: TabBarView(
                   children: [
-                    Center(
-                      child: Text('Testing 1'),
-                    ),
-                    Center(
+                    jacketWidget(),
+                    const Center(
                       child: Text('Testing 2'),
                     ),
-                    Center(
+                    const Center(
                       child: Text('Testing 3'),
                     ),
-                    Center(
+                    const Center(
                       child: Text('Testing 4'),
                     ),
                   ],
@@ -78,14 +103,14 @@ class UserScreen extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsetsDirectional.only(
-            top: MediaQuery.of(context).size.width * 0.036,
+            top: MediaQuery.of(context).size.width * 0.060,
             start: MediaQuery.of(context).size.width * 0.036,
             end: MediaQuery.of(context).size.width * 0.036,
           ),
           child: SafeArea(
             child: Material(
               child: Container(
-                color: KMainColor,
+                color: Colors.white,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -104,6 +129,41 @@ class UserScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget jacketWidget() {
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      stream: store.getAllProducts(),
+      builder: (BuildContext context, snapshot) {
+        return ConditionalBuilder(
+          condition: snapshot.hasData,
+          builder: (BuildContext context) {
+            List<Product> products = [];
+            addNewProductWithSnapshot(snapshot, products);
+            return GridView.builder(
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0, vertical: 10.0),
+                child: BuyItItemWidget(
+                  index: index,
+                  products: products,
+                ),
+              ),
+              itemCount: products.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1 / 1.5,
+              ),
+            );
+          },
+          fallback: (BuildContext context) => const Center(
+            child: CircularProgressIndicator(
+              color: Colors.deepOrange,
+            ),
+          ),
+        );
+      },
     );
   }
 }
