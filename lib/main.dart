@@ -5,6 +5,7 @@ import 'package:buy_it/screens/admin/edit_product_screen.dart';
 import 'package:buy_it/screens/admin/managed_product.dart';
 import 'package:buy_it/screens/login_screen.dart';
 import 'package:buy_it/screens/sign_up_screen.dart';
+import 'package:buy_it/screens/user/product_info.dart';
 import 'package:buy_it/screens/user/user_screen.dart';
 import 'package:buy_it/shared/cubit/bloc_observer.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           AddProductScreen.id: (context) => AddProductScreen(),
           ManagedProductScreen.id: (context) => ManagedProductScreen(),
           EditProductScreen.id: (context) => EditProductScreen(),
+          ProductInfo.id: (context) => const ProductInfo(),
         },
         theme: lightTheme,
         themeMode: ThemeMode.light,

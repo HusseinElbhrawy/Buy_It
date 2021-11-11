@@ -54,6 +54,19 @@ class BuyItCubit extends Cubit<BuyItStates> {
     bottomNavigationBarIndex = index;
     emit(ChangeBottomNavigationBarIndexState());
   }
+
+  int numberOfProductItems = 0;
+  void incrementNumberOfProductItems() {
+    numberOfProductItems++;
+    emit(IncrementNumberOfProductItemsState());
+  }
+
+  void decrementNumberOfProductItems() {
+    if (numberOfProductItems > 0) {
+      numberOfProductItems--;
+      emit(DecrementNumberOfProductItemsState());
+    }
+  }
 }
 
 enum AdminOrUser {

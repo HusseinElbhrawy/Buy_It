@@ -1,4 +1,5 @@
 import 'package:buy_it/models/product_model.dart';
+import 'package:buy_it/screens/user/product_info.dart';
 import 'package:buy_it/services/auth.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
@@ -194,7 +195,6 @@ class BuyItItemWidget extends StatelessWidget {
       : super(key: key);
   final List<Product> products;
   final int index;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -272,9 +272,18 @@ Widget tabBarItemViewWidget({
             itemBuilder: (context, index) => Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              child: BuyItItemWidget(
-                index: index,
-                products: categoryProduct,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    ProductInfo.id,
+                    arguments: categoryProduct[index],
+                  );
+                },
+                child: BuyItItemWidget(
+                  index: index,
+                  products: categoryProduct,
+                ),
               ),
             ),
             itemCount: categoryProduct.length,

@@ -13,3 +13,7 @@ class ChangeBetweenAdminOrUserState extends BuyItStates {}
 class ChangeTabBarIndexState extends BuyItStates {}
 
 class ChangeBottomNavigationBarIndexState extends BuyItStates {}
+
+class IncrementNumberOfProductItemsState extends BuyItStates {}
+
+class DecrementNumberOfProductItemsState extends BuyItStates {}
