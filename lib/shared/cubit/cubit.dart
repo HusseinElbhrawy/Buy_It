@@ -42,6 +42,13 @@ class BuyItCubit extends Cubit<BuyItStates> {
   }
 
   bool isAddingProduct = false;
+
+  int tabBarIndex = 0;
+  void changeTabBarIndex(int index) {
+    tabBarIndex = index;
+    print(tabBarIndex);
+    emit(ChangeTabBarIndexState());
+  }
 }
 
 enum AdminOrUser {

@@ -6,26 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
 
 class EditProductScreen extends StatelessWidget {
-/*  @override
-  void initState() {
-    firebaseStore
-        .getProductData(
-      id: widget.products[index].productId.toString(),
-    )
-        .then((value) {
-      print(value['productName']);
-    });
-  }*/
+  final formKey = GlobalKey<FormState>();
+
+  final firebaseStore = Store();
   static const String id = 'EditProductScreen';
   static final productName = TextEditingController();
   static final productPrice = TextEditingController();
   static final productDescription = TextEditingController();
   static final productCategory = TextEditingController();
   static final productLocation = TextEditingController();
-
-  final formKey = GlobalKey<FormState>();
-
-  final firebaseStore = Store();
 
   EditProductScreen({Key? key}) : super(key: key);
 

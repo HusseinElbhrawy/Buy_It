@@ -1,9 +1,9 @@
 import 'package:buy_it/models/product_model.dart';
-import 'package:buy_it/screens/admin/managed_prodcut.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:flutter/material.dart';
 
 import 'add_product.dart';
+import 'managed_product.dart';
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({Key? key}) : super(key: key);
