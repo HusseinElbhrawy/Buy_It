@@ -55,17 +55,35 @@ class BuyItCubit extends Cubit<BuyItStates> {
     emit(ChangeBottomNavigationBarIndexState());
   }
 
-  int numberOfProductItems = 0;
+  int numberOfProductItems = 1;
   void incrementNumberOfProductItems() {
     numberOfProductItems++;
     emit(IncrementNumberOfProductItemsState());
   }
 
   void decrementNumberOfProductItems() {
-    if (numberOfProductItems > 0) {
+    if (numberOfProductItems > 1) {
       numberOfProductItems--;
       emit(DecrementNumberOfProductItemsState());
     }
+  }
+
+  void addToCart(Product product) {
+    allProducts.add(product);
+    emit(AddProductToCartState());
+  }
+
+  void deleteProduct(Product product) {
+    allProducts.remove(product);
+    emit(DeleteProductFromCartState());
+  }
+
+  bool editProductInCart = false;
+  bool rememberMe = false;
+  bool isLogged = false;
+  changeRememberMe(bool value) {
+    rememberMe = value;
+    emit(ChangeRememberMeState());
   }
 }
 

@@ -6,6 +6,7 @@ import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/components/const.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
+import 'package:buy_it/shared/shared_prefrence/shared.dart';
 import 'package:buy_it/shared/styles/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,35 @@ class LoginScreen extends StatelessWidget {
                     await validCheckFunction(cubit, context);
                   },
                 ),
+                Padding(
+                  padding: EdgeInsetsDirectional.only(
+                      start: MediaQuery.of(context).size.height * 0.009),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        value: cubit.rememberMe,
+                        onChanged: (isCheck) {
+                          SharedPref.putData(
+                                  key: kKeepMeLoggedIn, value: cubit.rememberMe)
+                              .then(
+                            (value) {
+                              cubit.changeRememberMe(isCheck!);
+                            },
+                          );
+                        },
+                        fillColor: MaterialStateProperty.all(Colors.red),
+                      ),
+                      Text(
+                        'Remember Me',
+                        style: TextStyle(
+                          fontFamily: 'Jannah',
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width * 0.045,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 ConditionalBuilder(
                   condition: cubit.isLoading,
                   fallback: (BuildContext context) {
@@ -88,7 +118,10 @@ class LoginScreen extends StatelessWidget {
                       child: TextButton(
                         style: signUpAndSignInTextButtonStyle(),
                         onPressed: () async {
-                          await validCheckFunction(cubit, context);
+                          await validCheckFunction(cubit, context)
+                              .then((value) {
+                            cubit.isLogged = cubit.rememberMe;
+                          });
                         },
                         child: const Text(
                           'Login',
@@ -180,7 +213,7 @@ class LoginScreen extends StatelessWidget {
       formKey.currentState!.save();
       cubit.changeIsLoading();
       if (cubit.isAdmin) {
-        if (passwordController.text == KAdminPassword) {
+        if (passwordController.text == kAdminPassword) {
           await ifIsUserOrAdminTrue(
             cubit: cubit,
             context: context,
@@ -194,7 +227,7 @@ class LoginScreen extends StatelessWidget {
           cubit.changeIsLoading();
         }
       } else {
-        if (passwordController.text != KAdminPassword) {
+        if (passwordController.text != kAdminPassword) {
           await ifIsUserOrAdminTrue(
             cubit: cubit,
             context: context,

@@ -1,4 +1,5 @@
 import 'package:buy_it/models/product_model.dart';
+import 'package:buy_it/services/auth.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/components/const.dart';
@@ -8,10 +9,14 @@ import 'package:buy_it/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../login_screen.dart';
+import 'cart_screen.dart';
+
 class UserScreen extends StatelessWidget {
   UserScreen({Key? key}) : super(key: key);
   static const String id = 'HomeScreen';
   final store = Store();
+  final auth = Auth();
   final List<Product> jacketProducts = [];
   final List<Product> trouserProducts = [];
   final List<Product> shoesProducts = [];
@@ -29,26 +34,6 @@ class UserScreen extends StatelessWidget {
               var cubit = BuyItCubit.object(context);
               return Scaffold(
                 backgroundColor: Colors.white,
-                bottomNavigationBar: BottomNavigationBar(
-                  elevation: 0.0,
-                  backgroundColor: Colors.white,
-                  selectedItemColor: KMainColor,
-                  currentIndex: cubit.bottomNavigationBarIndex,
-                  onTap: (value) {
-                    cubit.changeBottomNavigationBarIndex(value);
-                    print(tShirtProducts.length);
-                  },
-                  items: const [
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.person),
-                      label: 'Testing',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.add),
-                      label: 'Testing',
-                    ),
-                  ],
-                ),
                 appBar: AppBar(
                   elevation: 0.0,
                   backgroundColor: Colors.white,
@@ -91,21 +76,33 @@ class UserScreen extends StatelessWidget {
                   children: [
                     tabBarItemViewWidget(
                         categoryProduct: jacketProducts,
-                        category: KJacket,
+                        category: kJacket,
                         store: store),
                     tabBarItemViewWidget(
                         categoryProduct: trouserProducts,
-                        category: KTrouser,
+                        category: kTrouser,
                         store: store),
                     tabBarItemViewWidget(
                         categoryProduct: shoesProducts,
-                        category: KShose,
+                        category: kShoes,
                         store: store),
                     tabBarItemViewWidget(
                         categoryProduct: tShirtProducts,
-                        category: KTShirt,
+                        category: kTShirt,
                         store: store),
                   ],
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.miniEndFloat,
+                floatingActionButton: FloatingActionButton(
+                  child: const Icon(Icons.close),
+                  backgroundColor: Colors.red,
+                  onPressed: () async {
+                    await auth.signOut();
+                    Navigator.popAndPushNamed(context, LoginScreen.id);
+                    LoginScreen.emailController.clear();
+                    LoginScreen.passwordController.clear();
+                  },
                 ),
               );
             },
@@ -131,7 +128,12 @@ class UserScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Icon(Icons.shopping_cart),
+                    InkWell(
+                      child: const Icon(Icons.shopping_cart),
+                      onTap: () {
+                        Navigator.pushNamed(context, CartScreen.id);
+                      },
+                    ),
                   ],
                 ),
               ),

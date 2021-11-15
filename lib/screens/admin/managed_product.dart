@@ -1,6 +1,8 @@
 import 'package:buy_it/models/product_model.dart';
+import 'package:buy_it/screens/admin/edit_product_screen.dart';
 import 'package:buy_it/services/store.dart';
 import 'package:buy_it/shared/components/components.dart';
+import 'package:buy_it/shared/components/custom_pop_up_menu.dart';
 import 'package:buy_it/shared/functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -25,9 +27,43 @@ class ManagedProductScreen extends StatelessWidget {
                 itemBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10.0, vertical: 10.0),
-                  child: BuyItItemWidget(
-                    index: index,
-                    products: products,
+                  child: GestureDetector(
+                    onTapUp: (details) {
+                      double dx = details.globalPosition.dx;
+                      double dy = details.globalPosition.dy;
+                      double dx2 = MediaQuery.of(context).size.width - dx;
+                      double dy2 = MediaQuery.of(context).size.height - dy;
+
+                      showMenu(
+                        context: context,
+                        position: RelativeRect.fromLTRB(dx, dy, dx2, dy2),
+                        items: [
+                          MyPopUpMenuItem(
+                            childWidget: const Text('Edit'),
+                            onClick: () {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                EditProductScreen.id,
+                                arguments: products[index],
+                              );
+                            },
+                          ),
+                          MyPopUpMenuItem(
+                            childWidget: const Text('Delete'),
+                            onClick: () {
+                              store.deleteProduct(
+                                productId: products[index].productId,
+                              );
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                    child: BuyItItemWidget(
+                      index: index,
+                      products: products,
+                    ),
                   ),
                 ),
                 itemCount: products.length,
@@ -46,25 +82,5 @@ class ManagedProductScreen extends StatelessWidget {
         },
       ),
     );
-  }
-}
-
-class MyPopUpMenuItem<T> extends PopupMenuItem<T> {
-  final Widget childWidget;
-  final Function onClick;
-  MyPopUpMenuItem({Key? key, required this.childWidget, required this.onClick})
-      : super(key: key, child: childWidget, onTap: () => onClick());
-
-  @override
-  PopupMenuItemState<T, PopupMenuItem<T>> createState() {
-    return MyPopUpMenuItemState();
-  }
-}
-
-class MyPopUpMenuItemState<T, PopMenuItem>
-    extends PopupMenuItemState<T, MyPopUpMenuItem<T>> {
-  @override
-  void handleTap() {
-    widget.onClick();
   }
 }

@@ -272,7 +272,7 @@ Widget tabBarItemViewWidget({
             itemBuilder: (context, index) => Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(
                     context,
@@ -300,5 +300,26 @@ Widget tabBarItemViewWidget({
         ),
       );
     },
+  );
+}
+
+ButtonStyle buildElevatedButtonStyle(BuildContext context) {
+  return ButtonStyle(
+    minimumSize: MaterialStateProperty.all(
+      Size(MediaQuery.of(context).size.width,
+          MediaQuery.of(context).size.height * 0.11),
+    ),
+    shape: MaterialStateProperty.all(
+      RoundedRectangleBorder(
+          borderRadius: BorderRadiusDirectional.only(
+        topStart: Radius.circular(MediaQuery.of(context).size.width * 0.055),
+        topEnd: Radius.circular(
+          MediaQuery.of(context).size.width * 0.055,
+        ),
+      )),
+    ),
+    backgroundColor: MaterialStateProperty.all(
+      KMainColor,
+    ),
   );
 }

@@ -18,4 +18,8 @@ class Auth {
         await auth.signInWithEmailAndPassword(email: email, password: password);
     return authResult;
   }
+
+  Future<void> signOut() async {
+    return await auth.signOut();
+  }
 }

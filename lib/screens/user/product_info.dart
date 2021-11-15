@@ -1,6 +1,9 @@
 import 'package:buy_it/models/product_model.dart';
+import 'package:buy_it/screens/user/cart_screen.dart';
+import 'package:buy_it/shared/components/components.dart';
 import 'package:buy_it/shared/cubit/cubit.dart';
 import 'package:buy_it/shared/cubit/states.dart';
+import 'package:buy_it/shared/functions.dart';
 import 'package:buy_it/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,74 +51,79 @@ class ProductInfo extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    const Icon(Icons.shopping_cart),
+                    InkWell(
+                      child: const Icon(Icons.shopping_cart),
+                      onTap: () {
+                        Navigator.pushNamed(context, CartScreen.id);
+                      },
+                    ),
                   ],
                 ),
               ),
             ),
-            Positioned(
-              bottom: 0.0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Opacity(
-                    opacity: .8,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.only(start: 15.0),
-                          child: Text(
-                            'Name: ${product.productName}',
-                            style: const TextStyle(
-                              fontSize: 20.5,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Jannah',
+            BlocConsumer<BuyItCubit, BuyItStates>(
+              listener: (BuildContext context, state) {},
+              builder: (BuildContext context, Object? state) {
+                var cubit = BuyItCubit.object(context);
+                return Positioned(
+                  bottom: 0.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Opacity(
+                        opacity: .8,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsetsDirectional.only(start: 15.0),
+                              child: Text(
+                                'Name: ${product.productName}',
+                                style: const TextStyle(
+                                  fontSize: 20.5,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Jannah',
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.010,
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.only(start: 15.0),
-                          child: Text(
-                            'Description: ${product.productDescription.toString()}',
-                            style: const TextStyle(
-                              fontSize: 15.5,
-                              fontFamily: 'Jannah',
+                            SizedBox(
+                              height: height * 0.010,
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.010,
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.only(start: 15.0),
-                          child: Text(
-                            'Price:  ${product.productPrice} \$ ',
-                            style: const TextStyle(
-                              fontSize: 20.5,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Jannah',
-                              color: Colors.red,
+                            Padding(
+                              padding:
+                                  const EdgeInsetsDirectional.only(start: 15.0),
+                              child: Text(
+                                'Description: ${product.productDescription.toString()}',
+                                style: const TextStyle(
+                                  fontSize: 15.5,
+                                  fontFamily: 'Jannah',
+                                ),
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              height: height * 0.010,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsetsDirectional.only(start: 15.0),
+                              child: Text(
+                                'Price:  ${product.productPrice} \$ ',
+                                style: const TextStyle(
+                                  fontSize: 20.5,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Jannah',
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.005,
-                  ),
-                  BlocConsumer<BuyItCubit, BuyItStates>(
-                    listener: (BuildContext context, state) {},
-                    builder: (BuildContext context, Object? state) {
-                      var cubit = BuyItCubit.object(context);
-                      return SizedBox(
+                      ),
+                      SizedBox(
+                        height: height * 0.005,
+                      ),
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: Row(
                           children: [
@@ -127,10 +135,10 @@ class ProductInfo extends StatelessWidget {
                                 backgroundColor: KSeconderyColor,
                                 child: IconButton(
                                   icon: const Icon(
-                                    Icons.add,
+                                    Icons.remove,
                                   ),
                                   onPressed: () {
-                                    cubit.incrementNumberOfProductItems();
+                                    cubit.decrementNumberOfProductItems();
                                   },
                                 ),
                               ),
@@ -140,6 +148,7 @@ class ProductInfo extends StatelessWidget {
                             ),
                             Text(
                               cubit.numberOfProductItems.toString(),
+                              style: const TextStyle(fontSize: 25.0),
                             ),
                             SizedBox(
                               width: width * 0.040,
@@ -148,52 +157,37 @@ class ProductInfo extends StatelessWidget {
                               backgroundColor: KSeconderyColor,
                               child: IconButton(
                                 icon: const Icon(
-                                  Icons.remove,
+                                  Icons.add,
                                 ),
                                 onPressed: () {
-                                  cubit.decrementNumberOfProductItems();
+                                  cubit.incrementNumberOfProductItems();
                                 },
                               ),
                             ),
                           ],
                         ),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: height * 0.055,
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(Size(
-                          MediaQuery.of(context).size.width,
-                          MediaQuery.of(context).size.height * 0.11)),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadiusDirectional.only(
-                          topStart: Radius.circular(
-                              MediaQuery.of(context).size.width * 0.055),
-                          topEnd: Radius.circular(
-                            MediaQuery.of(context).size.width * 0.055,
+                      ),
+                      SizedBox(
+                        height: height * 0.055,
+                      ),
+                      ElevatedButton(
+                        style: buildElevatedButtonStyle(context),
+                        onPressed: () {
+                          addToCardFunction(product, cubit, context);
+                        },
+                        child: Text(
+                          'Add to Cart'.toUpperCase(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.width * 0.040,
                           ),
-                        )),
+                        ),
                       ),
-                      backgroundColor: MaterialStateProperty.all(
-                        KMainColor,
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      'Add to Cart'.toUpperCase(),
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: MediaQuery.of(context).size.width * 0.040,
-                      ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
             )
           ],
         ),

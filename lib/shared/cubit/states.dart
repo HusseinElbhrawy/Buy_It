@@ -17,3 +17,9 @@ class ChangeBottomNavigationBarIndexState extends BuyItStates {}
 class IncrementNumberOfProductItemsState extends BuyItStates {}
 
 class DecrementNumberOfProductItemsState extends BuyItStates {}
+
+class AddProductToCartState extends BuyItStates {}
+
+class DeleteProductFromCartState extends BuyItStates {}
+
+class ChangeRememberMeState extends BuyItStates {}

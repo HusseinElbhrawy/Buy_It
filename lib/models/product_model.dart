@@ -5,6 +5,7 @@ class Product {
   late String? productCategory;
   late String? productImage;
   late String? productId;
+  late int? productQuantity;
 
   Product({
     required this.productName,
@@ -13,5 +14,6 @@ class Product {
     required this.productCategory,
     required this.productImage,
     this.productId,
+    this.productQuantity,
   });
 }
